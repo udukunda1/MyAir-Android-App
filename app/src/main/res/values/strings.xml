@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Air</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_boarding_passes">Boarding Passes</string>
+    <string name="nav_flight_status">Flight Status</string>
+    <string name="welcome_message">Welcome to United</string>
+    <string name="sign_in">Sign in</string>
+    <string name="action_flight_status">Flight status</string>
+    <string name="action_book_flight">Book a flight</string>
+    <string name="action_check_in">Check-in</string>
+    <string name="action_uber">UBER</string>
+</resources>

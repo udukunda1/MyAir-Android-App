@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/united_blue"
+    tools:context=".MainActivity">
+
+    <!-- Top Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/united_blue"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_menu"
+            android:contentDescription="Menu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UNITED"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/wallet_icon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_wallet"
+            android:contentDescription="Wallet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Tabs -->
+    <LinearLayout
+        android:id="@+id/tabs_container"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#20FFFFFF"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/top_bar">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/nav_home"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:background="#40FFFFFF"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/nav_boarding_passes"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/nav_flight_status"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Hero Section -->
+    <ImageView
+        android:id="@+id/hero_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/image"
+        android:scaleType="centerCrop"
+        android:contentDescription="Hero Image"
+        app:layout_constraintBottom_toTopOf="@id/banner"
+        app:layout_constraintTop_toBottomOf="@id/tabs_container" />
+
+
+    <!-- Banner -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/united_yellow"
+        app:layout_constraintBottom_toTopOf="@id/action_grid">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/welcome_message"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Action Grid -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/action_grid"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/white"
+        android:padding="2dp"
+        android:foreground="@drawable/border_white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Guideline at 55% for left column -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_55"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+        <!-- Guideline at 45% for right column -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_45"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.45" />
+
+        <!-- Flight Status -->
+        <LinearLayout
+            android:id="@+id/btn_flight_status"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#002144"
+            android:foreground="@drawable/border_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_55"
+            app:layout_constraintEnd_toStartOf="@+id/btn_uber"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_clock"
+                android:contentDescription="Clock"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_flight_status"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Uber -->
+        <LinearLayout
+            android:id="@+id/btn_uber"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/united_black"
+            android:foreground="@drawable/border_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_45"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_flight_status"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_uber"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textFontWeight="300"
+                android:letterSpacing="0.4"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Book a flight -->
+        <LinearLayout
+            android:id="@+id/btn_book"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#62A8E3"
+            android:foreground="@drawable/border_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_check_in"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_55">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_flight_circle"
+                android:contentDescription="Flight"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_book_flight"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Check-in -->
+        <LinearLayout
+            android:id="@+id/btn_check_in"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#003398"
+            android:foreground="@drawable/border_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_book"
+            app:layout_constraintTop_toTopOf="@+id/guideline_45">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_checkmark_circle"
+                android:contentDescription="Checkmark"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_check_in"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:gravity="center" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
