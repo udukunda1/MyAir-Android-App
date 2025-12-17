@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/form_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Top Bar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/united_blue">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="@dimen/icon_size_medium"
+                android:layout_height="@dimen/icon_size_medium"
+                android:layout_marginStart="@dimen/form_padding"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="Back"
+                android:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_book_flight_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_subtitle"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Form Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/form_padding">
+
+            <!-- Passenger Name (Read-only) -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_passenger"
+                android:textSize="@dimen/text_size_body"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tv_passenger_name"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/input_background"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:text="John Doe"
+                android:textSize="@dimen/text_size_body"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/form_field_spacing" />
+
+            <!-- Flight Number -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_flight_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/form_field_spacing"
+                android:hint="@string/label_flight_number"
+                app:boxBackgroundColor="@color/input_background"
+                app:boxStrokeColor="@color/united_blue"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_flight_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapCharacters"
+                    android:textSize="@dimen/text_size_body" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Booking Date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_booking_date"
+                android:textSize="@dimen/text_size_body"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/form_field_spacing">
+
+                <TextView
+                    android:id="@+id/tv_booking_date"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_weight="1"
+                    android:background="@color/input_background"
+                    android:gravity="center_vertical"
+                    android:padding="12dp"
+                    android:text="@string/btn_select_date"
+                    android:textColor="@color/text_hint"
+                    android:textSize="@dimen/text_size_body" />
+
+                <Button
+                    android:id="@+id/btn_select_booking_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/btn_select_date"
+                    android:backgroundTint="@color/united_light_blue"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <!-- Seat Number -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_seat_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/form_field_spacing"
+                android:hint="@string/label_seat_number"
+                app:boxBackgroundColor="@color/input_background"
+                app:boxStrokeColor="@color/united_blue"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_seat_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapCharacters"
+                    android:textSize="@dimen/text_size_body" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Booking Status -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_booking_status"
+                android:textSize="@dimen/text_size_body"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spinner_status"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:background="@color/input_background"
+                android:padding="12dp"
+                android:layout_marginBottom="@dimen/form_section_spacing" />
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/btn_save_booking"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/btn_save_booking"
+                android:textSize="16sp"
+                android:backgroundTint="@color/united_blue"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

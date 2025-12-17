@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/united_blue"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
     <!-- Top Bar -->
@@ -215,11 +216,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/action_uber"
+                android:text="@string/action_manage_passengers"
                 android:textColor="@color/white"
-                android:textSize="28sp"
+                android:textSize="20sp"
                 android:textFontWeight="300"
-                android:letterSpacing="0.4"
+                android:letterSpacing="0.1"
                 android:gravity="center" />
         </LinearLayout>
 
