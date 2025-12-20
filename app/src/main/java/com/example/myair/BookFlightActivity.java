@@ -146,11 +146,30 @@ public class BookFlightActivity extends AppCompatActivity {
         String seatNumber = etSeatNumber.getText().toString().trim();
         String status = spinnerStatus.getSelectedItem().toString();
 
+        // Save to local SQLite first (immediate)
         long result = dbHelper.addBooking(passengerId, flightNumber, selectedDate, seatNumber, status);
 
         if (result > 0) {
-            Toast.makeText(this, R.string.msg_booking_saved, Toast.LENGTH_SHORT).show();
-            finish(); // Return to PassengerDetailsActivity
+            // Sync with server (async)
+            NetworkService.getInstance(this).createBooking(
+                passengerId, 
+                flightNumber, 
+                selectedDate, 
+                seatNumber, 
+                status,
+                new NetworkService.NetworkCallback<org.json.JSONObject>() {
+                    @Override
+                    public void onSuccess(org.json.JSONObject response) {
+                        Toast.makeText(BookFlightActivity.this, R.string.msg_booking_saved, Toast.LENGTH_SHORT).show();
+                        finish(); // Return to PassengerDetailsActivity
+                    }
+                    
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(BookFlightActivity.this, "Saved locally. Server sync failed: " + error, Toast.LENGTH_LONG).show();
+                        finish(); // Still return, data is saved locally
+                    }
+                });
         } else {
             Toast.makeText(this, "Failed to save booking", Toast.LENGTH_SHORT).show();
         }

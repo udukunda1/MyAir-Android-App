@@ -100,8 +100,8 @@ public class AddPassengerFragment extends Fragment {
                                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                                 profileImagePreview.setImageBitmap(bitmap);
                                 
-                                // Save image to internal storage
-                                selectedImagePath = saveImageToInternalStorage(bitmap);
+                                // Convert image to Base64 string for server storage
+                                selectedImagePath = bitmapToBase64(bitmap);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
@@ -117,14 +117,24 @@ public class AddPassengerFragment extends Fragment {
         });
     }
 
-    private String saveImageToInternalStorage(Bitmap bitmap) {
-        File directory = getContext().getFilesDir();
-        String fileName = "passenger_" + System.currentTimeMillis() + ".jpg";
-        File file = new File(directory, fileName);
-
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
-            return file.getAbsolutePath();
+    private String bitmapToBase64(Bitmap bitmap) {
+        try {
+            // Resize image to reduce Base64 size (max 400x400)
+            int maxSize = 400;
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            
+            float scale = Math.min(((float) maxSize / width), ((float) maxSize / height));
+            int newWidth = Math.round(scale * width);
+            int newHeight = Math.round(scale * height);
+            
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+            
+            // Convert to Base64
+            java.io.ByteArrayOutputStream byteArrayOutputStream = new java.io.ByteArrayOutputStream();
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -228,12 +238,42 @@ public class AddPassengerFragment extends Fragment {
         if (editingPassenger != null) {
             // Update existing passenger
             passenger.setId(editingPassenger.getId());
+            
+            // Save to local SQLite first (immediate)
             dbHelper.updatePassenger(passenger);
-            Toast.makeText(getContext(), R.string.msg_passenger_updated, Toast.LENGTH_SHORT).show();
+            
+            // Sync with server (async)
+            NetworkService.getInstance(getContext()).updatePassenger(passenger, 
+                new NetworkService.NetworkCallback<org.json.JSONObject>() {
+                    @Override
+                    public void onSuccess(org.json.JSONObject response) {
+                        Toast.makeText(getContext(), R.string.msg_passenger_updated, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(getContext(), "Updated locally. Server sync failed: " + error, Toast.LENGTH_LONG).show();
+                    }
+                });
         } else {
             // Add new passenger
-            dbHelper.addPassenger(passenger);
-            Toast.makeText(getContext(), R.string.msg_passenger_saved, Toast.LENGTH_SHORT).show();
+            // Save to local SQLite first (immediate)
+            long id = dbHelper.addPassenger(passenger);
+            passenger.setId((int) id);
+            
+            // Sync with server (async)
+            NetworkService.getInstance(getContext()).createPassenger(passenger, 
+                new NetworkService.NetworkCallback<org.json.JSONObject>() {
+                    @Override
+                    public void onSuccess(org.json.JSONObject response) {
+                        Toast.makeText(getContext(), R.string.msg_passenger_saved, Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(getContext(), "Saved locally. Server sync failed: " + error, Toast.LENGTH_LONG).show();
+                    }
+                });
         }
 
         clearForm();
@@ -271,13 +311,19 @@ public class AddPassengerFragment extends Fragment {
         
         checkboxActive.setChecked(passenger.isActive());
         
-        // Load image
+        // Load Base64 image
         selectedImagePath = passenger.getProfileImagePath();
         if (selectedImagePath != null && !selectedImagePath.isEmpty()) {
-            File imgFile = new File(selectedImagePath);
-            if (imgFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                profileImagePreview.setImageBitmap(bitmap);
+            try {
+                // Decode Base64 to Bitmap
+                byte[] decodedBytes = android.util.Base64.decode(selectedImagePath, android.util.Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                if (bitmap != null) {
+                    profileImagePreview.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // If decoding fails, keep default image
             }
         }
         

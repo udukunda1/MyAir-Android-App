@@ -47,12 +47,20 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.Pass
         holder.tvEmail.setText(passenger.getEmail());
         holder.tvMembership.setText(passenger.getMembershipLevel());
 
-        // Load profile image if exists
+        // Load profile image if exists (Base64 encoded)
         if (passenger.getProfileImagePath() != null && !passenger.getProfileImagePath().isEmpty()) {
-            File imgFile = new File(passenger.getProfileImagePath());
-            if (imgFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                holder.imgProfile.setImageBitmap(bitmap);
+            try {
+                // Decode Base64 to Bitmap
+                byte[] decodedBytes = android.util.Base64.decode(passenger.getProfileImagePath(), android.util.Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                if (bitmap != null) {
+                    holder.imgProfile.setImageBitmap(bitmap);
+                } else {
+                    holder.imgProfile.setImageResource(android.R.drawable.ic_menu_gallery);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                holder.imgProfile.setImageResource(android.R.drawable.ic_menu_gallery);
             }
         } else {
             holder.imgProfile.setImageResource(android.R.drawable.ic_menu_gallery);

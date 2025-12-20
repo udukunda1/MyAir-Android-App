@@ -86,12 +86,18 @@ public class PassengerDetailsActivity extends AppCompatActivity {
         tvDetailPhone.setText("Phone: " + passenger.getPhone());
         tvDetailDob.setText("DOB: " + passenger.getDateOfBirth());
 
-        // Load profile image
+        // Load profile image (Base64 encoded)
         if (passenger.getProfileImagePath() != null && !passenger.getProfileImagePath().isEmpty()) {
-            File imgFile = new File(passenger.getProfileImagePath());
-            if (imgFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                imgProfileLarge.setImageBitmap(bitmap);
+            try {
+                // Decode Base64 to Bitmap
+                byte[] decodedBytes = android.util.Base64.decode(passenger.getProfileImagePath(), android.util.Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                if (bitmap != null) {
+                    imgProfileLarge.setImageBitmap(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Keep default image if decoding fails
             }
         }
     }

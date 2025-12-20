@@ -13,7 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
     private static final String DATABASE_NAME = "passenger_database.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Table Names
     private static final String TABLE_PASSENGERS = "passenger_accounts";
@@ -95,6 +95,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    // Add a new passenger with specific ID (for server sync)
+    public long addPassengerWithId(Passenger passenger) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        
+        // Include the ID from server
+        values.put(KEY_ID, passenger.getId());
+        values.put(KEY_FULL_NAME, passenger.getFullName());
+        values.put(KEY_EMAIL, passenger.getEmail());
+        values.put(KEY_PHONE, passenger.getPhone());
+        values.put(KEY_DATE_OF_BIRTH, passenger.getDateOfBirth());
+        values.put(KEY_MEMBERSHIP_LEVEL, passenger.getMembershipLevel());
+        values.put(KEY_IS_ACTIVE, passenger.isActive() ? 1 : 0);
+        values.put(KEY_PROFILE_IMAGE, passenger.getProfileImagePath());
+
+        long id = db.insert(TABLE_PASSENGERS, null, values);
+        db.close();
+        return id;
+    }
+
     // Get a single passenger by ID
     public Passenger getPassenger(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -128,7 +148,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Get all passengers
     public List<Passenger> getAllPassengers() {
         List<Passenger> passengerList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM " + TABLE_PASSENGERS + " ORDER BY " + KEY_FULL_NAME;
+        // Order by ID (latest created first)
+        String selectQuery = "SELECT * FROM " + TABLE_PASSENGERS + " ORDER BY " + KEY_ID + " DESC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
