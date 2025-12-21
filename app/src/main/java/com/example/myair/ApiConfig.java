@@ -7,8 +7,8 @@ public class ApiConfig {
     // - Example: 192.168.1.100 or 192.168.42.129 (if using USB tethering)
     
     // TODO: UPDATE THIS IP ADDRESS BEFORE RUNNING THE APP
-    //public static final String BASE_URL = "http://192.168.56.1:3000";
-    public static final String BASE_URL = "http://172.31.76.205:3000";
+    public static final String BASE_URL = "http://192.168.56.1:3000";
+//    public static final String BASE_URL = "http://172.31.76.205:3000";
     
     // Passenger endpoints
     public static final String GET_ALL_PASSENGERS = BASE_URL + "/api/passengers";
