@@ -43,7 +43,7 @@ const Passenger = sequelize.define('Passenger', {
         defaultValue: true
     },
     profile_image: {
-        type: DataTypes.TEXT, // Changed to TEXT to support Base64 encoded images
+        type: DataTypes.TEXT('long'), // LONGTEXT to support large Base64 encoded images (up to 4GB)
         allowNull: true
     }
 }, {

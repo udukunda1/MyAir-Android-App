@@ -14,8 +14,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors()); // Enable CORS for Android app
-app.use(bodyParser.json()); // Parse JSON request bodies
-app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(bodyParser.json({ limit: '1mb' })); // Parse JSON request bodies (increased limit for images)
+app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' })); // Parse URL-encoded bodies
 
 // Request logging middleware
 app.use((req, res, next) => {

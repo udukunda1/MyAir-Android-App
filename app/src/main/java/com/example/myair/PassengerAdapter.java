@@ -1,8 +1,6 @@
 package com.example.myair;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
 import java.util.List;
 
 public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.PassengerViewHolder> {
@@ -47,31 +44,17 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.Pass
         holder.tvEmail.setText(passenger.getEmail());
         holder.tvMembership.setText(passenger.getMembershipLevel());
 
-        // Load profile image if exists (Base64 encoded)
+        // Load profile image if available
         if (passenger.getProfileImagePath() != null && !passenger.getProfileImagePath().isEmpty()) {
-            try {
-                // Decode Base64 to Bitmap
-                byte[] decodedBytes = android.util.Base64.decode(passenger.getProfileImagePath(), android.util.Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                if (bitmap != null) {
-                    holder.imgProfile.setImageBitmap(bitmap);
-                } else {
-                    holder.imgProfile.setImageResource(android.R.drawable.ic_menu_gallery);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                holder.imgProfile.setImageResource(android.R.drawable.ic_menu_gallery);
+            android.graphics.Bitmap bitmap = ImageUtils.decodeBase64(passenger.getProfileImagePath());
+            if (bitmap != null) {
+                holder.ivProfile.setImageBitmap(bitmap);
+            } else {
+                holder.ivProfile.setImageResource(android.R.drawable.ic_menu_gallery);
             }
         } else {
-            holder.imgProfile.setImageResource(android.R.drawable.ic_menu_gallery);
+            holder.ivProfile.setImageResource(android.R.drawable.ic_menu_gallery);
         }
-
-        // Card click to view details
-        holder.itemView.setOnClickListener(v -> {
-            android.content.Intent intent = new android.content.Intent(context, PassengerDetailsActivity.class);
-            intent.putExtra("PASSENGER_ID", passenger.getId());
-            context.startActivity(intent);
-        });
 
         // Edit button click
         holder.btnEdit.setOnClickListener(v -> {
@@ -86,6 +69,14 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.Pass
                 listener.onDeleteClick(passenger);
             }
         });
+
+        // Card click to view details
+        holder.itemView.setOnClickListener(v -> {
+            // Navigate to passenger details
+            android.content.Intent intent = new android.content.Intent(context, PassengerDetailsActivity.class);
+            intent.putExtra("PASSENGER_ID", passenger.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -99,12 +90,16 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.Pass
     }
 
     static class PassengerViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProfile, btnEdit, btnDelete;
-        TextView tvName, tvEmail, tvMembership;
+        ImageView ivProfile;
+        TextView tvName;
+        TextView tvEmail;
+        TextView tvMembership;
+        ImageView btnEdit;
+        ImageView btnDelete;
 
         public PassengerViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgProfile = itemView.findViewById(R.id.img_profile);
+            ivProfile = itemView.findViewById(R.id.img_profile);
             tvName = itemView.findViewById(R.id.tv_name);
             tvEmail = itemView.findViewById(R.id.tv_email);
             tvMembership = itemView.findViewById(R.id.tv_membership);
